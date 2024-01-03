@@ -29,3 +29,12 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+###Visual Studio###
+*.sln
+*.vcxproj
+*.filters
+*.user
+/JDJ/.vs/
+/JDJ/x64/
+/JDJ/Gold_V/x64/
