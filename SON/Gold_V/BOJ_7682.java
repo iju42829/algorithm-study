@@ -8,7 +8,7 @@ import java.io.*;
 public class BOJ_7682 {
     public static boolean checkBingo(String s, String[][] ttt) {
         if(ttt[0][0].equals(s) && ttt[1][1].equals(s) && ttt[2][2].equals(s)) {
-            return true; // 우하강 대각선 빙고 여부 체크
+            return true; // 우하향 대각선 빙고 여부 체크
         }
         if(ttt[0][2].equals(s) && ttt[1][1].equals(s) && ttt[2][0].equals(s)) {
             return true; // 우상향 대각선 빙고 여부 체크
