@@ -5,34 +5,68 @@
 import java.io.*;
 
 public class BOJ_16434 {
-    public static void main(String[] args) throws IOException {
+    static int n;
+    static long atk, maxHP, left, right, mid;
+    static long[][] dungeon = null;
+    public static void main(String[] args) throws IOException{
         // 초기 설정
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         String[] info = br.readLine().split(" ");
-        int n = Integer.parseInt(info[0]);
-        long atk = Long.parseLong(info[1]);
+        n = Integer.parseInt(info[0]);
+        atk = Long.parseLong(info[1]);
+        dungeon = new long[n][3];
 
-        long curHP = 0, maxHP = 0;
-        for (int i = 0; i < n; i++) {
+        for(int i=0; i<n; i++) {
             String[] room = br.readLine().split(" ");
-            int N = Integer.parseInt(room[0]);
-            int atkInfo = Integer.parseInt(room[1]);
-            int HPInfo = Integer.parseInt(room[2]);
-
-            if(N == 1) {
-                // 몬스터의 방
-                long turn = HPInfo / atk;
-                if(HPInfo % atk != 0) turn++;
-                curHP += (turn-1) * atkInfo;
-                maxHP = (long)Math.max(curHP, maxHP);
-            } else {
-                // 포션의 방
-                atk += atkInfo;
-                curHP -= HPInfo;
-                if(curHP < 0) curHP = 0;
+            for(int j=0; j<3; j++) {
+                dungeon[i][j] = Long.parseLong(room[j]);
             }
         }
 
-        System.out.println(maxHP + 1);
+        // 이분 탐색
+        maxHP = (long)123456 * 1000000 * 1000000;
+        binarySearch();
+        System.out.println(maxHP);
+    }
+
+    static void binarySearch() {
+        left = 1; right = maxHP;
+
+        while(left < right) {
+            mid = (left + right) / 2;
+            boolean res = tryDungeon();
+
+            if(res) {
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
+
+        maxHP = left;
+    }
+
+    static boolean tryDungeon() {
+        long curAtk = atk;
+        long curHP = mid;
+        for(int i=0; i<n; i++) {
+            if(dungeon[i][0] == 1) {
+                // 몬스터의 방
+                long monsterAtk = dungeon[i][1];
+                long monsterHP = dungeon[i][2];
+                long turn = monsterHP / curAtk;
+                if(monsterHP % curAtk != 0) turn++;
+
+                if(curHP <= monsterAtk * (turn-1)) return false;
+                curHP -= monsterAtk * (turn-1);
+            } else {
+                // 포션의 방
+                curAtk += dungeon[i][1];
+                curHP += dungeon[i][2];
+                if(curHP > mid) curHP = mid;
+            }
+        }
+
+        return true;
     }
 }
