@@ -9,10 +9,10 @@ long long answer;
 vector<pair<int, pair<long long, long long>>> dungeon;
 
 
-bool enterDungeon(long long healthPoints) {
+bool enterDungeon(long long hp) {
 
-    long long currentAttack = attackPower;
-    long long currentHealth = healthPoints;
+    long long currAtk = attackPower;
+    long long currHp = hp;
 
     for (int i = 0; i < roomCount; i++) {
 
@@ -21,19 +21,19 @@ bool enterDungeon(long long healthPoints) {
         // 몬스터
         if (state == 1) {
             long long monsterAttack = dungeon[i].second.first;
-            long long monsterHealth = dungeon[i].second.second;
+            long long monsterHp = dungeon[i].second.second;
 
             long long turns;
-            if (monsterHealth % currentAttack == 0) turns = monsterHealth / currentAttack - 1;
-            else turns = monsterHealth / currentAttack;
+            if (monsterHp % currAtk == 0) turns = monsterHp / currAtk - 1;
+            else turns = monsterHp / currAtk;
 
-            currentHealth -= monsterAttack * turns;
-            if (currentHealth <= 0) return false;
+            currHp -= monsterAttack * turns;
+            if (currHp <= 0) return false;
         }
         // 포션
         else {
-            currentAttack += dungeon[i].second.first;
-            currentHealth = min(healthPoints, currentHealth + dungeon[i].second.second);
+            currAtk += dungeon[i].second.first;
+            currHp = min(hp, currHp + dungeon[i].second.second);
         }
     }
     return true;
