@@ -5,7 +5,7 @@ public class BOJ_16398 {
     static int n; // 행성의 개수
     static long cost = 0; // 플로우 관리비 합계
     static int[] parent; // 부모 노드 저장
-    static List<int[]> matrix = new ArrayList<>(); // 간선 및 관리비 저장
+    static List<int []> matrix = new ArrayList<>(); // 간선 및 관리비 저장
     public static void main(String[] args) throws IOException {
         // 초기 설정
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -41,7 +41,7 @@ public class BOJ_16398 {
         for(int[] flow : matrix) {
             boolean b = isUnion(flow[0], flow[1]);
             // 두 정점의 부모 노드가 같으면 사이클
-            if (!b) {
+            if (!isUnion(flow[0], flow[1])) {
                 cost += flow[2];
                 cnt++;
             }
